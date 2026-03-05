@@ -1,0 +1,31 @@
+{
+  "name": "playwright-mcp-server",
+  "version": "1.0.0",
+  "description": "Production-grade Playwright MCP Tool Server",
+  "main": "dist/server/mcpServer.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server/mcpServer.js",
+    "dev": "tsx watch src/server/mcpServer.ts",
+    "test": "jest --forceExit --detectOpenHandles"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "playwright": "^1.49.0",
+    "uuid": "^11.0.0",
+    "winston": "^3.17.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.10.0",
+    "@types/supertest": "^7.2.0",
+    "@types/uuid": "^10.0.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

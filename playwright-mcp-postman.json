@@ -1,0 +1,1028 @@
+{
+  "info": {
+    "name": "Playwright MCP Server API",
+    "description": "Comprehensive Postman collection for the Playwright MCP Server API, including all tools and example responses.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Server Operations",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/health",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["health"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"ok\",\n  \"sessions\": 2\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Tools",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tools",
+              "host": ["{{baseUrl}}"],
+              "path": ["tools"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/tools",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["tools"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "cookie": [],
+              "body": "{\n  \"tools\": [\n    { \"name\": \"navigate\", \"description\": \"Navigate to a URL\" },\n    { \"name\": \"click\", \"description\": \"Click an element matching the given selector\" }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Sessions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sessions",
+              "host": ["{{baseUrl}}"],
+              "path": ["sessions"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sessions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["sessions"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "cookie": [],
+              "body": "{\n  \"sessions\": [\n    {\n      \"sessionId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"createdAt\": \"2026-03-05T10:00:00.000Z\",\n      \"lastUsed\": \"2026-03-05T10:05:00.000Z\"\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Session Management",
+      "item": [
+        {
+          "name": "Start Session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.status === 'success' && jsonData.data.sessionId) {",
+                  "    pm.collectionVariables.set(\"sessionId\", jsonData.data.sessionId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"viewport\": { \"width\": 1280, \"height\": 720 },\n  \"userAgent\": \"Mozilla/5.0 ...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/session/start",
+              "host": ["{{baseUrl}}"],
+              "path": ["session", "start"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"viewport\": { \"width\": 1280, \"height\": 720 }\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/session/start",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["session", "start"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"sessionId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"createdAt\": \"2026-03-05T10:00:00.000Z\",\n    \"lastUsed\": \"2026-03-05T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Close Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/session/close",
+              "host": ["{{baseUrl}}"],
+              "path": ["session", "close"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/session/close",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["session", "close"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"sessionId\": \"{{sessionId}}\", \"closed\": true }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Core Interaction Tools",
+      "item": [
+        {
+          "name": "Navigate",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"navigate\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"url\": \"https://example.com\",\n    \"waitUntil\": \"load\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"url\": \"https://example.com/\", \"title\": \"Example Domain\", \"statusCode\": 200 }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Click",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"click\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"button#submit\",\n    \"button\": \"left\",\n    \"clickCount\": 1\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"button#submit\", \"clicked\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fill",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"fill\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"#email\",\n    \"value\": \"user@example.com\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"#email\", \"filled\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Hover",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"hover\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \".dropdown-trigger\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \".dropdown-trigger\", \"hovered\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Wait For Selector",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"wait_for_selector\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \".loading-spinner\",\n    \"state\": \"hidden\",\n    \"timeout\": 5000\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \".loading-spinner\", \"state\": \"hidden\", \"found\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Screenshot",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"screenshot\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"fullPage\": true\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"base64\": \"iVBORw0KGgo...\", \"type\": \"png\", \"size\": 54321 }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Extract Text",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"extract_text\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"h1\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"h1\", \"text\": \"Welcome to My App\" }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Additional Interaction Tools",
+      "item": [
+        {
+          "name": "Select Option",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"select_option\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"#country\",\n    \"values\": \"us\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"#country\", \"selected\": [\"us\"] }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Check",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"check\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"#agree-terms\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"#agree-terms\", \"checked\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Uncheck",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"uncheck\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"#newsletter\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"#newsletter\", \"unchecked\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Press Key",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"press\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"input#search\",\n    \"key\": \"Enter\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"input#search\", \"key\": \"Enter\", \"pressed\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Type",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"type\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"#search\",\n    \"text\": \"playwright\",\n    \"delay\": 50\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"#search\", \"typed\": true, \"length\": 10 }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Focus",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"focus\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"#username\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"#username\", \"focused\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Attribute",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_attribute\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"selector\": \"a.download\",\n    \"attribute\": \"href\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"a.download\", \"attribute\": \"href\", \"value\": \"/files/report.pdf\" }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Evaluate JS",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"evaluate\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"expression\": \"document.title\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"result\": \"My Page Title\" }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Drag and Drop",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"drag_and_drop\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"source\": \"#item1\",\n    \"target\": \"#zone1\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"source\": \"#item1\", \"target\": \"#zone1\", \"dropped\": true }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Navigation Tools",
+      "item": [
+        {
+          "name": "Go Back",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"go_back\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"url\": \"https://example.com/prev\", \"title\": \"Prev\", \"statusCode\": 200 }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Go Forward",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"go_forward\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"url\": \"https://example.com/next\", \"title\": \"Next\", \"statusCode\": 200 }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reload",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"reload\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"url\": \"https://example.com/\", \"title\": \"Example\", \"statusCode\": 200 }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Page Info Tools",
+      "item": [
+        {
+          "name": "Get Title",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_title\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"title\": \"Dashboard - My App\" }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get URL",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_url\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"url\": \"https://example.com/dashboard\" }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Wait For Load State",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"wait_for_load_state\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"state\": \"networkidle\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"state\": \"networkidle\", \"url\": \"https://example.com/\" }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Locator Tools",
+      "item": [
+        {
+          "name": "Test Locator",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"test_locator\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"button\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"selector\": \"button\",\n    \"totalCount\": 2,\n    \"showing\": 2,\n    \"elements\": [\n      { \"index\": 0, \"tagName\": \"button\", \"text\": \"Submit\", \"visible\": true }\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get By Text",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_by_text\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"text\": \"Login\", \"exact\": true }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"text\": \"Login\", \"exact\": true, \"totalCount\": 1, \"elements\": [{ \"index\": 0, \"tagName\": \"button\", \"text\": \"Login\" }] }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get By Role",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_by_role\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"role\": \"button\", \"name\": \"Submit\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Get By Label",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_by_label\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"text\": \"Email\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Get By Placeholder",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_by_placeholder\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"text\": \"Search\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Get By Test ID",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"get_by_test_id\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"testId\": \"login-btn\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Highlight Locator",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"highlight_locator\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"button\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"button\", \"locator\": \"button\", \"matchCount\": 5, \"highlighted\": true, \"screenshot\": \"...\" }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Assertion Tools",
+      "item": [
+        {
+          "name": "Assert Text",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_text\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"h1\", \"expected\": \"Welcome\", \"exact\": false }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": { \"selector\": \"h1\", \"expected\": \"Welcome\", \"actual\": \"Welcome to Dashboard\", \"passed\": true }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Assert Visible",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_visible\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"#main-content\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert Hidden",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_hidden\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \".spinner\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert Title",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_title\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"expected\": \"Dashboard\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert URL",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_url\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"expected\": \"/dashboard\", \"exact\": false }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert Element Count",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_element_count\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \".item\", \"count\": 5 }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert Attribute",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_attribute\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"a.cta\", \"attribute\": \"href\", \"expected\": \"/signup\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert Checked",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_checked\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"#agree\", \"checked\": true }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert Enabled",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_enabled\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"#submit\", \"enabled\": true }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "Assert Value",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"assert_value\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": { \"selector\": \"#email\", \"expected\": \"test@example.com\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow Example",
+      "item": [
+        {
+          "name": "1. Start Session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.status === 'success') pm.collectionVariables.set(\"sessionId\", jsonData.data.sessionId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"viewport\": {\"width\": 1280, \"height\": 720}}"
+            },
+            "url": { "raw": "{{baseUrl}}/session/start", "host": ["{{baseUrl}}"], "path": ["session", "start"] }
+          }
+        },
+        {
+          "name": "2. Navigate",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"tool\":\"navigate\",\"sessionId\":\"{{sessionId}}\",\"args\":{\"url\":\"https://example.com\"}}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "3. Click Link",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"tool\":\"click\",\"sessionId\":\"{{sessionId}}\",\"args\":{\"selector\":\"a\"}}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        },
+        {
+          "name": "4. Close Session",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sessionId\":\"{{sessionId}}\"}"
+            },
+            "url": { "raw": "{{baseUrl}}/session/close", "host": ["{{baseUrl}}"], "path": ["session", "close"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3002", "type": "string" },
+    { "key": "sessionId", "value": "", "type": "string" }
+  ]
+}
