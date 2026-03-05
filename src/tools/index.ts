@@ -54,4 +54,3 @@ export { zephyrUpdateTest } from "./zephyrUpdateTest";
 
 // Database Tools
 export { dbQuery } from "./dbQuery";
-export { getOtp } from "./getOtp";
