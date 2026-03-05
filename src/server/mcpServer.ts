@@ -1,10 +1,11 @@
+import "dotenv/config";
 import express from "express";
 import { config } from "../config/config";
 import { logger } from "../utils/logger";
 import { AppError, errorMiddleware } from "../utils/errorHandler";
 import { playwrightManager } from "../browser/playwrightManager";
 import { toolRegistry } from "./toolRegistry";
-import { toolRequestSchema, sessionStartSchema } from "../schemas/toolSchemas";
+import { toolRequestSchema, sessionStartSchema, workflowRequestSchema } from "../schemas/toolSchemas";
 
 export function createApp() {
   const app = express();
@@ -64,6 +65,40 @@ export function createApp() {
 
       const statusCode = result.status === "success" ? 200 : 422;
       res.status(statusCode).json(result);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Execute a workflow (multiple tools in sequence)
+  app.post("/workflow", async (req, res, next) => {
+    try {
+      const { sessionId, steps, stopOnFailure } = workflowRequestSchema.parse(req.body);
+      const results = [];
+      const page = playwrightManager.getPage(sessionId);
+
+      for (const step of steps) {
+        if (!toolRegistry.get(step.tool)) {
+          const error = `Unknown tool: ${step.tool}`;
+          results.push({ tool: step.tool, status: "error", error });
+          if (stopOnFailure) break;
+          continue;
+        }
+
+        const result = await toolRegistry.execute(step.tool, { page, sessionId }, step.args);
+        results.push({ tool: step.tool, ...result });
+
+        if (stopOnFailure && result.status === "error") {
+          break;
+        }
+      }
+
+      const anyError = results.some((r) => r.status === "error");
+      const statusCode = anyError ? 422 : 200;
+      res.status(statusCode).json({
+        status: anyError ? "error" : "success",
+        data: { results },
+      });
     } catch (err) {
       next(err);
     }

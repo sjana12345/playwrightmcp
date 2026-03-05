@@ -30,7 +30,7 @@ class ToolRegistry {
   async execute(
     toolName: string,
     ctx: ToolContext,
-    args: Record<string, unknown>
+    args: any
   ): Promise<ToolResult> {
     const tool = this.tools.get(toolName);
     if (!tool) {

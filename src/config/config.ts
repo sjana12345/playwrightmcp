@@ -17,4 +17,8 @@ export const config = {
   request: {
     timeout: parseInt(process.env.REQUEST_TIMEOUT ?? "60000", 10),
   },
+  zephyr: {
+    baseUrl: process.env.ZEPHYR_BASE_URL ?? "https://api.zephyrscale.smartbear.com/v2",
+    apiToken: process.env.ZEPHYR_API_TOKEN,
+  },
 } as const;

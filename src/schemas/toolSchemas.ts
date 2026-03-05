@@ -215,10 +215,26 @@ export const highlightLocatorSchema = z.object({
   duration: z.number().int().positive().optional().default(3000),
 });
 
+export const zephyrTestExecutionSchema = z.object({
+  projectKey: z.string().min(1, "Project key is required"),
+  testCaseKey: z.string().min(1, "Test case key is required"),
+  statusName: z.enum(["Pass", "Fail", "Blocked", "WIP", "Unexecuted"]),
+  testCycleKey: z.string().optional(),
+  comment: z.string().optional(),
+  executionTime: z.number().int().nonnegative().optional(),
+  environmentName: z.string().optional(),
+  actualEndDate: z.string().datetime().optional(),
+});
+
+export const zephyrUpdateTestSchema = z.union([
+  zephyrTestExecutionSchema,
+  z.array(zephyrTestExecutionSchema),
+]);
+
 export const toolRequestSchema = z.object({
   tool: z.string().min(1, "Tool name is required"),
   sessionId: z.string().min(1, "Session ID is required"),
-  args: z.record(z.unknown()).optional().default({}),
+  args: z.union([z.record(z.unknown()), z.array(z.unknown())]).optional().default({}),
 });
 
 export const sessionStartSchema = z.object({
@@ -229,4 +245,15 @@ export const sessionStartSchema = z.object({
     })
     .optional(),
   userAgent: z.string().optional(),
+});
+
+export const workflowStepSchema = z.object({
+  tool: z.string().min(1, "Tool name is required"),
+  args: z.record(z.unknown()).optional().default({}),
+});
+
+export const workflowRequestSchema = z.object({
+  sessionId: z.string().min(1, "Session ID is required"),
+  steps: z.array(workflowStepSchema).min(1, "At least one step is required"),
+  stopOnFailure: z.boolean().optional().default(true),
 });

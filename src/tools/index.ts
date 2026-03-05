@@ -48,3 +48,6 @@ export { assertAttribute } from "./assertAttribute";
 export { assertChecked } from "./assertChecked";
 export { assertEnabled } from "./assertEnabled";
 export { assertValue } from "./assertValue";
+
+// Zephyr tools
+export { zephyrUpdateTest } from "./zephyrUpdateTest";

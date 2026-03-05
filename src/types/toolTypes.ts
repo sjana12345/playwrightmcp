@@ -15,7 +15,7 @@ export interface ToolContext {
 export interface ToolDefinition {
   name: string;
   description: string;
-  execute: (ctx: ToolContext, args: Record<string, unknown>) => Promise<ToolResult>;
+  execute: (ctx: ToolContext, args: any) => Promise<ToolResult>;
 }
 
 export interface SessionInfo {

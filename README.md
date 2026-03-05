@@ -15,6 +15,7 @@ All request/response bodies are JSON. Set `Content-Type: application/json` for a
   - [Close Session](#close-session)
   - [List Sessions](#list-sessions)
   - [Execute Tool](#execute-tool)
+  - [Execute Workflow](#execute-workflow)
 - [Environment Variables](#environment-variables)
 - [Tool Reference](#tool-reference)
   - [Core Interaction Tools](#core-interaction-tools)
@@ -23,6 +24,7 @@ All request/response bodies are JSON. Set `Content-Type: application/json` for a
   - [Page Info Tools](#page-info-tools)
   - [Locator Tools](#locator-tools)
   - [Assertion Tools](#assertion-tools)
+  - [Zephyr Tools](#zephyr-tools)
 - [Error Handling](#error-handling)
 
 ---
@@ -211,6 +213,71 @@ This is the primary endpoint for all browser automation actions.
   "status": "error",
   "error": "Error description",
   "screenshot": "<base64_png_on_failure>"
+}
+```
+
+---
+
+### Execute Workflow
+
+```
+POST /workflow
+```
+
+Execute multiple tools in a single sequence.
+
+**Request Body:**
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `sessionId` | `string` | Yes | - | Target session ID |
+| `steps` | `array` | Yes | - | Array of tool execution steps |
+| `steps[].tool` | `string` | Yes | - | Tool name to execute |
+| `steps[].args` | `object` | No | `{}` | Tool-specific arguments |
+| `stopOnFailure` | `boolean` | No | `true` | Whether to stop if a step fails |
+
+**Payload Example:**
+
+```json
+{
+  "sessionId": "abc-123",
+  "steps": [
+    { "tool": "navigate", "args": { "url": "https://example.com" } },
+    { "tool": "assert_text", "args": { "selector": "h1", "expected": "Example Domain" } },
+    { "tool": "screenshot", "args": { "fullPage": true } }
+  ],
+  "stopOnFailure": true
+}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "results": [
+      { "tool": "navigate", "status": "success", "data": { ... } },
+      { "tool": "assert_text", "status": "success", "data": { ... } },
+      { "tool": "screenshot", "status": "success", "data": { ... } }
+    ]
+  }
+}
+```
+
+**Error Response (422):**
+
+Returns 422 if any step fails.
+
+```json
+{
+  "status": "error",
+  "data": {
+    "results": [
+      { "tool": "navigate", "status": "success", "data": { ... } },
+      { "tool": "assert_text", "status": "error", "error": "Assertion failed..." }
+    ]
+  }
 }
 ```
 
@@ -2250,6 +2317,98 @@ Assert that an input element's value matches.
 {
   "status": "error",
   "error": "Value assertion failed. Element \"#email\": Expected: \"user@example.com\", Actual: \"admin@example.com\""
+}
+```
+
+---
+
+### Zephyr Tools
+
+#### `zephyr_update_test`
+
+Update test execution result in Zephyr Scale Cloud.
+
+| Arg | Type | Required | Default | Description |
+|-----|------|----------|---------|-------------|
+| `projectKey` | `string` | Yes | - | Jira project key (e.g., `"UZ2"`) |
+| `testCaseKey` | `string` | Yes | - | Zephyr test case key (e.g., `"UZ2-T123"`) |
+| `statusName` | `string` | Yes | - | `"Pass"` \| `"Fail"` \| `"Blocked"` \| `"WIP"` \| `"Unexecuted"` |
+| `testCycleKey` | `string` | No | - | Zephyr test cycle key (e.g., `"UZ2-R5"`) |
+| `comment` | `string` | No | - | Optional execution comment |
+| `executionTime` | `integer` | No | - | Execution time in milliseconds |
+| `environmentName` | `string` | No | - | Environment name (e.g., `"Production"`) |
+| `actualEndDate` | `string` | No | - | ISO 8601 date string |
+
+**Payload Examples:**
+
+```json
+{
+  "tool": "zephyr_update_test",
+  "sessionId": "abc-123",
+  "args": {
+    "projectKey": "UZ2",
+    "testCaseKey": "UZ2-T123",
+    "statusName": "Pass",
+    "testCycleKey": "UZ2-R5",
+    "comment": "Automation test passed"
+  }
+}
+```
+
+```json
+{
+  "tool": "zephyr_update_test",
+  "sessionId": "abc-123",
+  "args": {
+    "projectKey": "UZ2",
+    "testCaseKey": "UZ2-T456",
+    "statusName": "Fail",
+    "testCycleKey": "UZ2-R5",
+    "environmentName": "Staging",
+    "executionTime": 4500
+  }
+}
+```
+
+**Bulk Update Example:**
+
+```json
+{
+  "tool": "zephyr_update_test",
+  "sessionId": "abc-123",
+  "args": [
+    {
+      "projectKey": "UZ2",
+      "testCaseKey": "UZ2-T5340",
+      "statusName": "Pass",
+      "testCycleKey": "UZ2-R6",
+      "environmentName": "dev",
+      "executionTime": 1200,
+      "comment": "Executed via Playwright MCP Server"
+    },
+    {
+      "projectKey": "UZ2",
+      "testCaseKey": "UZ2-T5341",
+      "statusName": "Fail",
+      "testCycleKey": "UZ2-R6",
+      "environmentName": "dev",
+      "executionTime": 1500,
+      "comment": "Element not found"
+    }
+  ]
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 1234567,
+    "key": "UZ2-E123",
+    "self": "https://api.zephyrscale.smartbear.com/v2/testexecutions/1234567"
+  }
 }
 ```
 

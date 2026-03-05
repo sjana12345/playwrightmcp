@@ -956,6 +956,49 @@
       ]
     },
     {
+      "name": "Zephyr Tools",
+      "item": [
+        {
+          "name": "Update Test Result",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"zephyr_update_test\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"projectKey\": \"UZ2\",\n    \"testCaseKey\": \"UZ2-T123\",\n    \"statusName\": \"Pass\",\n    \"testCycleKey\": \"UZ2-R5\",\n    \"comment\": \"Executed via Playwright MCP Server\"\n  }\n}\n"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflows",
+      "item": [
+        {
+          "name": "Execute Workflow",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"steps\": [\n    { \"tool\": \"navigate\", \"args\": { \"url\": \"https://example.com\" } },\n    { \"tool\": \"assert_text\", \"args\": { \"selector\": \"h1\", \"expected\": \"Example Domain\" } }\n  ],\n  \"stopOnFailure\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/workflow", "host": ["{{baseUrl}}"], "path": ["workflow"] }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"results\": [\n      { \"tool\": \"navigate\", \"status\": \"success\", \"data\": { ... } },\n      { \"tool\": \"assert_text\", \"status\": \"success\", \"data\": { ... } }\n    ]\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Workflow Example",
       "item": [
         {
