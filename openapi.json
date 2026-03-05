@@ -1,0 +1,160 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Playwright MCP Server",
+    "description": "A production-grade browser automation server that allows AI agents to control a browser, execute workflows, and update Zephyr test results.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://unvoting-laurence-harder.ngrok-free.dev",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/privacy": {
+      "get": {
+        "summary": "Get the Privacy Policy",
+        "operationId": "getPrivacyPolicy",
+        "responses": {
+          "200": {
+            "description": "The Privacy Policy",
+            "content": { "text/markdown": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/session/start": {
+      "post": {
+        "summary": "Start a new browser session",
+        "operationId": "startSession",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "viewport": {
+                    "type": "object",
+                    "properties": {
+                      "width": { "type": "integer" },
+                      "height": { "type": "integer" }
+                    }
+                  },
+                  "userAgent": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Session started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "sessionId": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tool": {
+      "post": {
+        "summary": "Execute a browser tool",
+        "description": "Call specific tools like navigate, click, fill, screenshot, or zephyr_update_test.",
+        "operationId": "executeTool",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["tool", "sessionId"],
+                "properties": {
+                  "tool": {
+                    "type": "string",
+                    "description": "The tool to run. Options: 'navigate', 'click', 'fill', 'hover', 'wait_for_selector', 'screenshot', 'extract_text', 'select_option', 'check', 'uncheck', 'press', 'type', 'focus', 'get_attribute', 'evaluate', 'drag_and_drop', 'go_back', 'go_forward', 'reload', 'get_title', 'get_url', 'wait_for_load_state', 'test_locator', 'get_by_text', 'get_by_role', 'get_by_label', 'get_by_placeholder', 'get_by_test_id', 'highlight_locator', 'assert_text', 'assert_visible', 'assert_hidden', 'assert_title', 'assert_url', 'assert_element_count', 'assert_attribute', 'assert_checked', 'assert_enabled', 'assert_value', 'zephyr_update_test', 'db_query', 'get_otp'"
+                  },
+                  "sessionId": { "type": "string" },
+                  "args": {
+                    "type": "object",
+                    "description": "Arguments for the specific tool"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success" },
+          "422": { "description": "Tool Execution Failed" }
+        }
+      }
+    },
+    "/workflow": {
+      "post": {
+        "summary": "Execute multiple tools in sequence",
+        "operationId": "executeWorkflow",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["sessionId", "steps"],
+                "properties": {
+                  "sessionId": { "type": "string" },
+                  "steps": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tool": { "type": "string" },
+                        "args": { "type": "object" }
+                      }
+                    }
+                  },
+                  "stopOnFailure": { "type": "boolean", "default": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Workflow completed" }
+        }
+      }
+    },
+    "/session/close": {
+      "post": {
+        "summary": "Close a session",
+        "operationId": "closeSession",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["sessionId"],
+                "properties": { "sessionId": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Closed" } }
+      }
+    }
+  }
+}

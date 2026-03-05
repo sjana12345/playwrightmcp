@@ -1,5 +1,7 @@
 import "dotenv/config";
 import express from "express";
+import fs from "fs";
+import path from "path";
 import { config } from "../config/config";
 import { logger } from "../utils/logger";
 import { AppError, errorMiddleware } from "../utils/errorHandler";
@@ -10,6 +12,18 @@ import { toolRequestSchema, sessionStartSchema, workflowRequestSchema } from "..
 export function createApp() {
   const app = express();
   app.use(express.json());
+
+  // Privacy Policy
+  app.get("/privacy", (_req, res) => {
+    try {
+      const privacyPath = path.join(process.cwd(), "PRIVACY.md");
+      const content = fs.readFileSync(privacyPath, "utf-8");
+      res.header("Content-Type", "text/markdown");
+      res.send(content);
+    } catch (err) {
+      res.status(500).send("Privacy Policy not found.");
+    }
+  });
 
   // Health check
   app.get("/health", (_req, res) => {

@@ -25,6 +25,7 @@ All request/response bodies are JSON. Set `Content-Type: application/json` for a
   - [Locator Tools](#locator-tools)
   - [Assertion Tools](#assertion-tools)
   - [Zephyr Tools](#zephyr-tools)
+  - [Database Tools (OTP)](#database-tools-otp)
 - [Error Handling](#error-handling)
 
 ---
@@ -77,12 +78,12 @@ Creates a new browser context and page.
 
 **Request Body:**
 
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `viewport` | `object` | No | Browser default | Custom viewport size |
-| `viewport.width` | `integer` | Yes (if viewport) | - | Viewport width in pixels |
-| `viewport.height` | `integer` | Yes (if viewport) | - | Viewport height in pixels |
-| `userAgent` | `string` | No | Browser default | Custom user agent string |
+| Field               | Type        | Required          | Default         | Description               |
+| ------------------- | ----------- | ----------------- | --------------- | ------------------------- |
+| `viewport`        | `object`  | No                | Browser default | Custom viewport size      |
+| `viewport.width`  | `integer` | Yes (if viewport) | -               | Viewport width in pixels  |
+| `viewport.height` | `integer` | Yes (if viewport) | -               | Viewport height in pixels |
+| `userAgent`       | `string`  | No                | Browser default | Custom user agent string  |
 
 **Payload Examples:**
 
@@ -126,9 +127,9 @@ POST /session/close
 
 **Request Body:**
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `sessionId` | `string` | Yes | The session ID to close |
+| Field         | Type       | Required | Description             |
+| ------------- | ---------- | -------- | ----------------------- |
+| `sessionId` | `string` | Yes      | The session ID to close |
 
 **Payload:**
 
@@ -181,11 +182,11 @@ This is the primary endpoint for all browser automation actions.
 
 **Request Body:**
 
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `tool` | `string` | Yes | - | Tool name to execute |
-| `sessionId` | `string` | Yes | - | Target session ID |
-| `args` | `object` | No | `{}` | Tool-specific arguments |
+| Field         | Type       | Required | Default | Description             |
+| ------------- | ---------- | -------- | ------- | ----------------------- |
+| `tool`      | `string` | Yes      | -       | Tool name to execute    |
+| `sessionId` | `string` | Yes      | -       | Target session ID       |
+| `args`      | `object` | No       | `{}`  | Tool-specific arguments |
 
 **Generic Payload Structure:**
 
@@ -228,13 +229,13 @@ Execute multiple tools in a single sequence.
 
 **Request Body:**
 
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `sessionId` | `string` | Yes | - | Target session ID |
-| `steps` | `array` | Yes | - | Array of tool execution steps |
-| `steps[].tool` | `string` | Yes | - | Tool name to execute |
-| `steps[].args` | `object` | No | `{}` | Tool-specific arguments |
-| `stopOnFailure` | `boolean` | No | `true` | Whether to stop if a step fails |
+| Field             | Type        | Required | Default  | Description                     |
+| ----------------- | ----------- | -------- | -------- | ------------------------------- |
+| `sessionId`     | `string`  | Yes      | -        | Target session ID               |
+| `steps`         | `array`   | Yes      | -        | Array of tool execution steps   |
+| `steps[].tool`  | `string`  | Yes      | -        | Tool name to execute            |
+| `steps[].args`  | `object`  | No       | `{}`   | Tool-specific arguments         |
+| `stopOnFailure` | `boolean` | No       | `true` | Whether to stop if a step fails |
 
 **Payload Example:**
 
@@ -285,20 +286,20 @@ Returns 422 if any step fails.
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3002` | Server port |
-| `HOST` | `0.0.0.0` | Server host |
-| `BROWSER_HEADLESS` | `true` | Set to `"false"` for headed mode |
-| `DEFAULT_TIMEOUT` | `30000` | Default Playwright timeout (ms) |
-| `RETRY_ATTEMPTS` | `3` | Tool execution retry attempts |
-| `RETRY_DELAY` | `1000` | Delay between retries (ms) |
-| `SCREENSHOT_ON_FAILURE` | `true` | Capture screenshot on tool failure |
-| `TRACING_ENABLED` | `false` | Enable Playwright tracing |
-| `VIDEO_RECORDING` | `false` | Enable video recording |
-| `MAX_CONCURRENT_SESSIONS` | `10` | Max simultaneous sessions |
-| `SESSION_IDLE_TIMEOUT` | `300000` | Auto-close idle sessions after (ms) |
-| `REQUEST_TIMEOUT` | `60000` | Tool execution timeout (ms) |
+| Variable                    | Default     | Description                         |
+| --------------------------- | ----------- | ----------------------------------- |
+| `PORT`                    | `3002`    | Server port                         |
+| `HOST`                    | `0.0.0.0` | Server host                         |
+| `BROWSER_HEADLESS`        | `true`    | Set to `"false"` for headed mode  |
+| `DEFAULT_TIMEOUT`         | `30000`   | Default Playwright timeout (ms)     |
+| `RETRY_ATTEMPTS`          | `3`       | Tool execution retry attempts       |
+| `RETRY_DELAY`             | `1000`    | Delay between retries (ms)          |
+| `SCREENSHOT_ON_FAILURE`   | `true`    | Capture screenshot on tool failure  |
+| `TRACING_ENABLED`         | `false`   | Enable Playwright tracing           |
+| `VIDEO_RECORDING`         | `false`   | Enable video recording              |
+| `MAX_CONCURRENT_SESSIONS` | `10`      | Max simultaneous sessions           |
+| `SESSION_IDLE_TIMEOUT`    | `300000`  | Auto-close idle sessions after (ms) |
+| `REQUEST_TIMEOUT`         | `60000`   | Tool execution timeout (ms)         |
 
 ---
 
@@ -314,10 +315,10 @@ All tools are called via `POST /tool` with the tool name in the `tool` field and
 
 Navigate to a URL.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `url` | `string` | Yes | - | Valid URL to navigate to |
-| `waitUntil` | `string` | No | `"load"` | `"load"` \| `"domcontentloaded"` \| `"networkidle"` \| `"commit"` |
+| Arg           | Type       | Required | Default    | Description                                                               |
+| ------------- | ---------- | -------- | ---------- | ------------------------------------------------------------------------- |
+| `url`       | `string` | Yes      | -          | Valid URL to navigate to                                                  |
+| `waitUntil` | `string` | No       | `"load"` | `"load"` \| `"domcontentloaded"` \| `"networkidle"` \| `"commit"` |
 
 **Payload Examples:**
 
@@ -368,12 +369,12 @@ Navigate to a URL.
 
 Click an element matching the given selector.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `button` | `string` | No | `"left"` | `"left"` \| `"right"` \| `"middle"` |
-| `clickCount` | `integer` | No | `1` | Number of clicks (2 for double-click) |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg            | Type        | Required | Default    | Description                               |
+| -------------- | ----------- | -------- | ---------- | ----------------------------------------- |
+| `selector`   | `string`  | Yes      | -          | CSS/XPath selector                        |
+| `button`     | `string`  | No       | `"left"` | `"left"` \| `"right"` \| `"middle"` |
+| `clickCount` | `integer` | No       | `1`      | Number of clicks (2 for double-click)     |
+| `timeout`    | `integer` | No       | -          | Timeout in ms                             |
 
 **Payload Examples:**
 
@@ -432,11 +433,11 @@ Click an element matching the given selector.
 
 Fill an input element with a value (clears existing content first).
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `value` | `string` | Yes | - | Value to fill |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description        |
+| ------------ | ----------- | -------- | ------- | ------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector |
+| `value`    | `string`  | Yes      | -       | Value to fill      |
+| `timeout`  | `integer` | No       | -       | Timeout in ms      |
 
 **Payload Examples:**
 
@@ -479,10 +480,10 @@ Fill an input element with a value (clears existing content first).
 
 Hover over an element.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description        |
+| ------------ | ----------- | -------- | ------- | ------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector |
+| `timeout`  | `integer` | No       | -       | Timeout in ms      |
 
 **Payload Examples:**
 
@@ -517,11 +518,11 @@ Hover over an element.
 
 Wait for an element to reach a desired state.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `state` | `string` | No | `"visible"` | `"attached"` \| `"detached"` \| `"visible"` \| `"hidden"` |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default       | Description                                                       |
+| ------------ | ----------- | -------- | ------------- | ----------------------------------------------------------------- |
+| `selector` | `string`  | Yes      | -             | CSS/XPath selector                                                |
+| `state`    | `string`  | No       | `"visible"` | `"attached"` \| `"detached"` \| `"visible"` \| `"hidden"` |
+| `timeout`  | `integer` | No       | -             | Timeout in ms                                                     |
 
 **Payload Examples:**
 
@@ -572,12 +573,12 @@ Wait for an element to reach a desired state.
 
 Take a screenshot of the page or a specific element.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | No | - | Element selector (omit for full page) |
-| `fullPage` | `boolean` | No | `false` | Capture full scrollable page |
-| `type` | `string` | No | `"png"` | `"png"` \| `"jpeg"` |
-| `quality` | `integer` | No | - | JPEG quality 0-100 (only for jpeg) |
+| Arg          | Type        | Required | Default   | Description                           |
+| ------------ | ----------- | -------- | --------- | ------------------------------------- |
+| `selector` | `string`  | No       | -         | Element selector (omit for full page) |
+| `fullPage` | `boolean` | No       | `false` | Capture full scrollable page          |
+| `type`     | `string`  | No       | `"png"` | `"png"` \| `"jpeg"`               |
+| `quality`  | `integer` | No       | -         | JPEG quality 0-100 (only for jpeg)    |
 
 **Payload Examples:**
 
@@ -636,10 +637,10 @@ Take a screenshot of the page or a specific element.
 
 Extract text content from an element.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description        |
+| ------------ | ----------- | -------- | ------- | ------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector |
+| `timeout`  | `integer` | No       | -       | Timeout in ms      |
 
 **Payload Examples:**
 
@@ -676,11 +677,11 @@ Extract text content from an element.
 
 Select one or more options in a `<select>` element.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector for `<select>` |
-| `values` | `string` or `string[]` | Yes | - | Option value(s) to select |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type                       | Required | Default | Description                         |
+| ------------ | -------------------------- | -------- | ------- | ----------------------------------- |
+| `selector` | `string`                 | Yes      | -       | CSS/XPath selector for `<select>` |
+| `values`   | `string` or `string[]` | Yes      | -       | Option value(s) to select           |
+| `timeout`  | `integer`                | No       | -       | Timeout in ms                       |
 
 **Payload Examples:**
 
@@ -723,10 +724,10 @@ Select one or more options in a `<select>` element.
 
 Check a checkbox or radio button.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description        |
+| ------------ | ----------- | -------- | ------- | ------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector |
+| `timeout`  | `integer` | No       | -       | Timeout in ms      |
 
 **Payload Examples:**
 
@@ -761,10 +762,10 @@ Check a checkbox or radio button.
 
 Uncheck a checkbox.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description        |
+| ------------ | ----------- | -------- | ------- | ------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector |
+| `timeout`  | `integer` | No       | -       | Timeout in ms      |
 
 **Payload Examples:**
 
@@ -799,11 +800,11 @@ Uncheck a checkbox.
 
 Press a keyboard key on a focused element.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector to target |
-| `key` | `string` | Yes | - | Key to press (e.g., `"Enter"`, `"Tab"`, `"ArrowDown"`, `"Control+a"`, `"Meta+c"`) |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description                                                                                |
+| ------------ | ----------- | -------- | ------- | ------------------------------------------------------------------------------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector to target                                                               |
+| `key`      | `string`  | Yes      | -       | Key to press (e.g.,`"Enter"`, `"Tab"`, `"ArrowDown"`, `"Control+a"`, `"Meta+c"`) |
+| `timeout`  | `integer` | No       | -       | Timeout in ms                                                                              |
 
 **Payload Examples:**
 
@@ -870,12 +871,12 @@ Press a keyboard key on a focused element.
 
 Type text character by character (simulates real keystrokes, unlike `fill`).
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `text` | `string` | Yes | - | Text to type |
-| `delay` | `integer` | No | - | Delay between keystrokes in ms |
-| `timeout` | `integer` | No | - | Timeout to find element in ms |
+| Arg          | Type        | Required | Default | Description                    |
+| ------------ | ----------- | -------- | ------- | ------------------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector             |
+| `text`     | `string`  | Yes      | -       | Text to type                   |
+| `delay`    | `integer` | No       | -       | Delay between keystrokes in ms |
+| `timeout`  | `integer` | No       | -       | Timeout to find element in ms  |
 
 **Payload Examples:**
 
@@ -918,10 +919,10 @@ Type text character by character (simulates real keystrokes, unlike `fill`).
 
 Focus an element.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description        |
+| ------------ | ----------- | -------- | ------- | ------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector |
+| `timeout`  | `integer` | No       | -       | Timeout in ms      |
 
 **Payload Examples:**
 
@@ -956,11 +957,11 @@ Focus an element.
 
 Get the value of an element's attribute.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `attribute` | `string` | Yes | - | Attribute name |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg           | Type        | Required | Default | Description        |
+| ------------- | ----------- | -------- | ------- | ------------------ |
+| `selector`  | `string`  | Yes      | -       | CSS/XPath selector |
+| `attribute` | `string`  | Yes      | -       | Attribute name     |
+| `timeout`   | `integer` | No       | -       | Timeout in ms      |
 
 **Payload Examples:**
 
@@ -1003,9 +1004,9 @@ Get the value of an element's attribute.
 
 Execute JavaScript in the browser page context.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `expression` | `string` | Yes | - | JavaScript expression to evaluate |
+| Arg            | Type       | Required | Default | Description                       |
+| -------------- | ---------- | -------- | ------- | --------------------------------- |
+| `expression` | `string` | Yes      | -       | JavaScript expression to evaluate |
 
 **Payload Examples:**
 
@@ -1064,11 +1065,11 @@ Execute JavaScript in the browser page context.
 
 Drag an element and drop it onto another element.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `source` | `string` | Yes | - | Source element selector |
-| `target` | `string` | Yes | - | Target element selector |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg         | Type        | Required | Default | Description             |
+| ----------- | ----------- | -------- | ------- | ----------------------- |
+| `source`  | `string`  | Yes      | -       | Source element selector |
+| `target`  | `string`  | Yes      | -       | Target element selector |
+| `timeout` | `integer` | No       | -       | Timeout in ms           |
 
 **Payload Examples:**
 
@@ -1105,9 +1106,9 @@ Drag an element and drop it onto another element.
 
 Navigate back in browser history.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| *(none)* | - | - | - | No arguments needed |
+| Arg        | Type | Required | Default | Description         |
+| ---------- | ---- | -------- | ------- | ------------------- |
+| *(none)* | -    | -        | -       | No arguments needed |
 
 **Payload:**
 
@@ -1134,9 +1135,9 @@ Navigate back in browser history.
 
 Navigate forward in browser history.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| *(none)* | - | - | - | No arguments needed |
+| Arg        | Type | Required | Default | Description         |
+| ---------- | ---- | -------- | ------- | ------------------- |
+| *(none)* | -    | -        | -       | No arguments needed |
 
 **Payload:**
 
@@ -1163,10 +1164,10 @@ Navigate forward in browser history.
 
 Reload the current page.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `waitUntil` | `string` | No | `"load"` | `"load"` \| `"domcontentloaded"` \| `"networkidle"` \| `"commit"` |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg           | Type        | Required | Default    | Description                                                               |
+| ------------- | ----------- | -------- | ---------- | ------------------------------------------------------------------------- |
+| `waitUntil` | `string`  | No       | `"load"` | `"load"` \| `"domcontentloaded"` \| `"networkidle"` \| `"commit"` |
+| `timeout`   | `integer` | No       | -          | Timeout in ms                                                             |
 
 **Payload Examples:**
 
@@ -1211,9 +1212,9 @@ Reload the current page.
 
 Get the current page title.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| *(none)* | - | - | - | No arguments needed |
+| Arg        | Type | Required | Default | Description         |
+| ---------- | ---- | -------- | ------- | ------------------- |
+| *(none)* | -    | -        | -       | No arguments needed |
 
 **Payload:**
 
@@ -1240,9 +1241,9 @@ Get the current page title.
 
 Get the current page URL.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| *(none)* | - | - | - | No arguments needed |
+| Arg        | Type | Required | Default | Description         |
+| ---------- | ---- | -------- | ------- | ------------------- |
+| *(none)* | -    | -        | -       | No arguments needed |
 
 **Payload:**
 
@@ -1269,10 +1270,10 @@ Get the current page URL.
 
 Wait for the page to reach a specific load state.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `state` | `string` | No | `"load"` | `"load"` \| `"domcontentloaded"` \| `"networkidle"` |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg         | Type        | Required | Default    | Description                                               |
+| ----------- | ----------- | -------- | ---------- | --------------------------------------------------------- |
+| `state`   | `string`  | No       | `"load"` | `"load"` \| `"domcontentloaded"` \| `"networkidle"` |
+| `timeout` | `integer` | No       | -          | Timeout in ms                                             |
 
 **Payload Examples:**
 
@@ -1317,11 +1318,11 @@ Wait for the page to reach a specific load state.
 
 Test a CSS/XPath selector and get detailed info about matched elements.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS or XPath selector to test |
-| `maxResults` | `integer` | No | `5` | Maximum number of element details to return |
-| `timeout` | `integer` | No | - | Timeout to wait for selector |
+| Arg            | Type        | Required | Default | Description                                 |
+| -------------- | ----------- | -------- | ------- | ------------------------------------------- |
+| `selector`   | `string`  | Yes      | -       | CSS or XPath selector to test               |
+| `maxResults` | `integer` | No       | `5`   | Maximum number of element details to return |
+| `timeout`    | `integer` | No       | -       | Timeout to wait for selector                |
 
 **Payload Examples:**
 
@@ -1386,10 +1387,10 @@ Test a CSS/XPath selector and get detailed info about matched elements.
 
 Find elements by their text content.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `text` | `string` | Yes | - | Text to search for |
-| `exact` | `boolean` | No | `false` | Exact match vs contains |
+| Arg       | Type        | Required | Default   | Description             |
+| --------- | ----------- | -------- | --------- | ----------------------- |
+| `text`  | `string`  | Yes      | -         | Text to search for      |
+| `exact` | `boolean` | No       | `false` | Exact match vs contains |
 
 **Payload Examples:**
 
@@ -1439,15 +1440,15 @@ Find elements by their text content.
 
 Find elements by their ARIA role.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `role` | `string` | Yes | - | ARIA role (e.g., `"button"`, `"link"`, `"heading"`, `"textbox"`, `"checkbox"`, `"tab"`, `"menuitem"`, `"dialog"`, `"navigation"`, `"listitem"`) |
-| `name` | `string` | No | - | Accessible name filter |
-| `checked` | `boolean` | No | - | Filter by checked state |
-| `disabled` | `boolean` | No | - | Filter by disabled state |
-| `expanded` | `boolean` | No | - | Filter by expanded state |
-| `pressed` | `boolean` | No | - | Filter by pressed state |
-| `selected` | `boolean` | No | - | Filter by selected state |
+| Arg          | Type        | Required | Default | Description                                                                                                                                                        |
+| ------------ | ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `role`     | `string`  | Yes      | -       | ARIA role (e.g.,`"button"`, `"link"`, `"heading"`, `"textbox"`, `"checkbox"`, `"tab"`, `"menuitem"`, `"dialog"`, `"navigation"`, `"listitem"`) |
+| `name`     | `string`  | No       | -       | Accessible name filter                                                                                                                                             |
+| `checked`  | `boolean` | No       | -       | Filter by checked state                                                                                                                                            |
+| `disabled` | `boolean` | No       | -       | Filter by disabled state                                                                                                                                           |
+| `expanded` | `boolean` | No       | -       | Filter by expanded state                                                                                                                                           |
+| `pressed`  | `boolean` | No       | -       | Filter by pressed state                                                                                                                                            |
+| `selected` | `boolean` | No       | -       | Filter by selected state                                                                                                                                           |
 
 **Payload Examples:**
 
@@ -1537,10 +1538,10 @@ Find elements by their ARIA role.
 
 Find form elements by their associated label text.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `text` | `string` | Yes | - | Label text to search for |
-| `exact` | `boolean` | No | `false` | Exact match vs contains |
+| Arg       | Type        | Required | Default   | Description              |
+| --------- | ----------- | -------- | --------- | ------------------------ |
+| `text`  | `string`  | Yes      | -         | Label text to search for |
+| `exact` | `boolean` | No       | `false` | Exact match vs contains  |
 
 **Payload Examples:**
 
@@ -1590,10 +1591,10 @@ Find form elements by their associated label text.
 
 Find input elements by their placeholder text.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `text` | `string` | Yes | - | Placeholder text to search for |
-| `exact` | `boolean` | No | `false` | Exact match vs contains |
+| Arg       | Type        | Required | Default   | Description                    |
+| --------- | ----------- | -------- | --------- | ------------------------------ |
+| `text`  | `string`  | Yes      | -         | Placeholder text to search for |
+| `exact` | `boolean` | No       | `false` | Exact match vs contains        |
 
 **Payload Examples:**
 
@@ -1643,9 +1644,9 @@ Find input elements by their placeholder text.
 
 Find elements by their `data-testid` attribute.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `testId` | `string` | Yes | - | Test ID value |
+| Arg        | Type       | Required | Default | Description   |
+| ---------- | ---------- | -------- | ------- | ------------- |
+| `testId` | `string` | Yes      | -       | Test ID value |
 
 **Payload Examples:**
 
@@ -1694,11 +1695,11 @@ Find elements by their `data-testid` attribute.
 
 Visually highlight all elements matching a selector on the page (useful for debugging). Returns a screenshot with highlights visible.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS selector to highlight |
-| `color` | `string` | No | `"rgba(255, 0, 0, 0.3)"` | Highlight overlay color (any CSS color) |
-| `duration` | `integer` | No | `3000` | How long highlights stay visible (ms) |
+| Arg          | Type        | Required | Default                    | Description                             |
+| ------------ | ----------- | -------- | -------------------------- | --------------------------------------- |
+| `selector` | `string`  | Yes      | -                          | CSS selector to highlight               |
+| `color`    | `string`  | No       | `"rgba(255, 0, 0, 0.3)"` | Highlight overlay color (any CSS color) |
+| `duration` | `integer` | No       | `3000`                   | How long highlights stay visible (ms)   |
 
 **Payload Examples:**
 
@@ -1760,12 +1761,12 @@ All assertion tools return `"status": "success"` with `"passed": true` when the 
 
 Assert that an element's text content matches the expected value.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `expected` | `string` | Yes | - | Expected text |
-| `exact` | `boolean` | No | `false` | `true` = exact match, `false` = contains |
-| `timeout` | `integer` | No | - | Timeout to wait for element visibility |
+| Arg          | Type        | Required | Default   | Description                                  |
+| ------------ | ----------- | -------- | --------- | -------------------------------------------- |
+| `selector` | `string`  | Yes      | -         | CSS/XPath selector                           |
+| `expected` | `string`  | Yes      | -         | Expected text                                |
+| `exact`    | `boolean` | No       | `false` | `true` = exact match, `false` = contains |
+| `timeout`  | `integer` | No       | -         | Timeout to wait for element visibility       |
 
 **Payload Examples:**
 
@@ -1825,10 +1826,10 @@ Assert that an element's text content matches the expected value.
 
 Assert that an element is visible on the page.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `timeout` | `integer` | No | - | Timeout to wait for visibility |
+| Arg          | Type        | Required | Default | Description                    |
+| ------------ | ----------- | -------- | ------- | ------------------------------ |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector             |
+| `timeout`  | `integer` | No       | -       | Timeout to wait for visibility |
 
 **Payload Examples:**
 
@@ -1872,10 +1873,10 @@ Assert that an element is visible on the page.
 
 Assert that an element is hidden or not present.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `timeout` | `integer` | No | - | Timeout to wait for element to hide |
+| Arg          | Type        | Required | Default | Description                         |
+| ------------ | ----------- | -------- | ------- | ----------------------------------- |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector                  |
+| `timeout`  | `integer` | No       | -       | Timeout to wait for element to hide |
 
 **Payload Examples:**
 
@@ -1919,10 +1920,10 @@ Assert that an element is hidden or not present.
 
 Assert that the page title matches.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `expected` | `string` | Yes | - | Expected title |
-| `exact` | `boolean` | No | `false` | `true` = exact match, `false` = contains |
+| Arg          | Type        | Required | Default   | Description                                  |
+| ------------ | ----------- | -------- | --------- | -------------------------------------------- |
+| `expected` | `string`  | Yes      | -         | Expected title                               |
+| `exact`    | `boolean` | No       | `false` | `true` = exact match, `false` = contains |
 
 **Payload Examples:**
 
@@ -1966,10 +1967,10 @@ Assert that the page title matches.
 
 Assert that the current URL matches.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `expected` | `string` | Yes | - | Expected URL (full or partial) |
-| `exact` | `boolean` | No | `true` | `true` = exact match, `false` = contains |
+| Arg          | Type        | Required | Default  | Description                                  |
+| ------------ | ----------- | -------- | -------- | -------------------------------------------- |
+| `expected` | `string`  | Yes      | -        | Expected URL (full or partial)               |
+| `exact`    | `boolean` | No       | `true` | `true` = exact match, `false` = contains |
 
 **Payload Examples:**
 
@@ -2021,11 +2022,11 @@ Assert that the current URL matches.
 
 Assert the number of elements matching a selector.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `count` | `integer` | Yes | - | Expected count (>= 0) |
-| `timeout` | `integer` | No | - | Timeout to wait for selector |
+| Arg          | Type        | Required | Default | Description                  |
+| ------------ | ----------- | -------- | ------- | ---------------------------- |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector           |
+| `count`    | `integer` | Yes      | -       | Expected count (>= 0)        |
+| `timeout`  | `integer` | No       | -       | Timeout to wait for selector |
 
 **Payload Examples:**
 
@@ -2077,12 +2078,12 @@ Assert the number of elements matching a selector.
 
 Assert an element's attribute value.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `attribute` | `string` | Yes | - | Attribute name |
-| `expected` | `string` or `null` | Yes | - | Expected value (`null` = attribute should not exist) |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg           | Type                   | Required | Default | Description                                            |
+| ------------- | ---------------------- | -------- | ------- | ------------------------------------------------------ |
+| `selector`  | `string`             | Yes      | -       | CSS/XPath selector                                     |
+| `attribute` | `string`             | Yes      | -       | Attribute name                                         |
+| `expected`  | `string` or `null` | Yes      | -       | Expected value (`null` = attribute should not exist) |
+| `timeout`   | `integer`            | No       | -       | Timeout in ms                                          |
 
 **Payload Examples:**
 
@@ -2142,11 +2143,11 @@ Assert an element's attribute value.
 
 Assert that a checkbox or radio button is checked or unchecked.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `checked` | `boolean` | No | `true` | Expected checked state |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default  | Description            |
+| ------------ | ----------- | -------- | -------- | ---------------------- |
+| `selector` | `string`  | Yes      | -        | CSS/XPath selector     |
+| `checked`  | `boolean` | No       | `true` | Expected checked state |
+| `timeout`  | `integer` | No       | -        | Timeout in ms          |
 
 **Payload Examples:**
 
@@ -2206,11 +2207,11 @@ Assert that a checkbox or radio button is checked or unchecked.
 
 Assert that an element is enabled or disabled.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `enabled` | `boolean` | No | `true` | Expected enabled state |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default  | Description            |
+| ------------ | ----------- | -------- | -------- | ---------------------- |
+| `selector` | `string`  | Yes      | -        | CSS/XPath selector     |
+| `enabled`  | `boolean` | No       | `true` | Expected enabled state |
+| `timeout`  | `integer` | No       | -        | Timeout in ms          |
 
 **Payload Examples:**
 
@@ -2270,11 +2271,11 @@ Assert that an element is enabled or disabled.
 
 Assert that an input element's value matches.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `selector` | `string` | Yes | - | CSS/XPath selector |
-| `expected` | `string` | Yes | - | Expected input value |
-| `timeout` | `integer` | No | - | Timeout in ms |
+| Arg          | Type        | Required | Default | Description          |
+| ------------ | ----------- | -------- | ------- | -------------------- |
+| `selector` | `string`  | Yes      | -       | CSS/XPath selector   |
+| `expected` | `string`  | Yes      | -       | Expected input value |
+| `timeout`  | `integer` | No       | -       | Timeout in ms        |
 
 **Payload Examples:**
 
@@ -2328,16 +2329,16 @@ Assert that an input element's value matches.
 
 Update test execution result in Zephyr Scale Cloud.
 
-| Arg | Type | Required | Default | Description |
-|-----|------|----------|---------|-------------|
-| `projectKey` | `string` | Yes | - | Jira project key (e.g., `"UZ2"`) |
-| `testCaseKey` | `string` | Yes | - | Zephyr test case key (e.g., `"UZ2-T123"`) |
-| `statusName` | `string` | Yes | - | `"Pass"` \| `"Fail"` \| `"Blocked"` \| `"WIP"` \| `"Unexecuted"` |
-| `testCycleKey` | `string` | No | - | Zephyr test cycle key (e.g., `"UZ2-R5"`) |
-| `comment` | `string` | No | - | Optional execution comment |
-| `executionTime` | `integer` | No | - | Execution time in milliseconds |
-| `environmentName` | `string` | No | - | Environment name (e.g., `"Production"`) |
-| `actualEndDate` | `string` | No | - | ISO 8601 date string |
+| Arg                 | Type        | Required | Default | Description                                                                |
+| ------------------- | ----------- | -------- | ------- | -------------------------------------------------------------------------- |
+| `projectKey`      | `string`  | Yes      | -       | Jira project key (e.g.,`"UZ2"`)                                          |
+| `testCaseKey`     | `string`  | Yes      | -       | Zephyr test case key (e.g.,`"UZ2-T123"`)                                 |
+| `statusName`      | `string`  | Yes      | -       | `"Pass"` \| `"Fail"` \| `"Blocked"` \| `"WIP"` \| `"Unexecuted"` |
+| `testCycleKey`    | `string`  | No       | -       | Zephyr test cycle key (e.g.,`"UZ2-R5"`)                                  |
+| `comment`         | `string`  | No       | -       | Optional execution comment                                                 |
+| `executionTime`   | `integer` | No       | -       | Execution time in milliseconds                                             |
+| `environmentName` | `string`  | No       | -       | Environment name (e.g.,`"Production"`)                                   |
+| `actualEndDate`   | `string`  | No       | -       | ISO 8601 date string                                                       |
 
 **Payload Examples:**
 
@@ -2414,18 +2415,97 @@ Update test execution result in Zephyr Scale Cloud.
 
 ---
 
+### Database Tools (OTP)
+
+#### `db_query`
+
+Execute a custom SQL query on the PostgreSQL database (e.g., to fetch an OTP).
+
+| Arg        | Type       | Required | Default | Description                        |
+| ---------- | ---------- | -------- | ------- | ---------------------------------- |
+| `query`  | `string` | Yes      | -       | SQL query to execute               |
+| `values` | `array`  | No       | -       | Parameterized values for the query |
+
+**Payload Example (Get OTP):**
+
+```json
+{
+  "tool": "db_query",
+  "sessionId": "abc-123",
+  "args": {
+    "query": "SELECT otp FROM users WHERE email = $1 ORDER BY created_at DESC LIMIT 1",
+    "values": ["user@example.com"]
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "rowCount": 1,
+    "rows": [
+      { "otp": "123456" }
+    ]
+  }
+}
+```
+
+#### `get_otp`
+
+Simplified tool to fetch the latest OTP for a user.
+
+| Arg | Type | Required | Default | Description |
+|-----|------|----------|---------|-------------|
+| `email` | `string` | No* | - | User's email address |
+| `phone` | `string` | No* | - | User's phone number |
+| `table` | `string` | No | `"otps"` | Table name to search in |
+| `otpColumn` | `string` | No | `"otp"` | Column name containing the OTP |
+| `identifierColumn` | `string` | No | `"email"` | Column name for the identifier |
+
+*\*Either email or phone is required.*
+
+**Payload Example:**
+
+```json
+{
+  "tool": "get_otp",
+  "sessionId": "abc-123",
+  "args": {
+    "email": "user@example.com"
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "otp": "123456",
+    "identifier": "user@example.com",
+    "fetchedAt": "2026-03-05T19:30:00Z"
+  }
+}
+```
+
+---
+
 ## Error Handling
 
 ### HTTP Status Codes
 
-| Code | Meaning |
-|------|---------|
-| `200` | Tool executed successfully |
-| `400` | Bad request (invalid input, unknown tool, missing session ID) |
-| `404` | Session not found |
+| Code    | Meaning                                                            |
+| ------- | ------------------------------------------------------------------ |
+| `200` | Tool executed successfully                                         |
+| `400` | Bad request (invalid input, unknown tool, missing session ID)      |
+| `404` | Session not found                                                  |
 | `422` | Tool execution failed (assertion failure, element not found, etc.) |
-| `429` | Max concurrent sessions reached |
-| `500` | Internal server error |
+| `429` | Max concurrent sessions reached                                    |
+| `500` | Internal server error                                              |
 
 ### Error Response Format
 

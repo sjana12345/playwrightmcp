@@ -231,6 +231,19 @@ export const zephyrUpdateTestSchema = z.union([
   z.array(zephyrTestExecutionSchema),
 ]);
 
+export const dbQuerySchema = z.object({
+  query: z.string().min(1, "SQL query is required"),
+  values: z.array(z.unknown()).optional(),
+});
+
+export const getOtpSchema = z.object({
+  email: z.string().email().optional(),
+  phone: z.string().optional(),
+  table: z.string().optional().default("otps"),
+  otpColumn: z.string().optional().default("otp"),
+  identifierColumn: z.string().optional().default("email"),
+});
+
 export const toolRequestSchema = z.object({
   tool: z.string().min(1, "Tool name is required"),
   sessionId: z.string().min(1, "Session ID is required"),

@@ -973,6 +973,23 @@
       ]
     },
     {
+      "name": "Database Tools",
+      "item": [
+        {
+          "name": "Get OTP",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"db_query\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"args\": {\n    \"query\": \"SELECT otp FROM otps WHERE email = 'user@example.com' ORDER BY created_at DESC LIMIT 1\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tool", "host": ["{{baseUrl}}"], "path": ["tool"] }
+          }
+        }
+      ]
+    },
+    {
       "name": "Workflows",
       "item": [
         {

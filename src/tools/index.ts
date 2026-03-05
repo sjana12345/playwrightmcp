@@ -51,3 +51,7 @@ export { assertValue } from "./assertValue";
 
 // Zephyr tools
 export { zephyrUpdateTest } from "./zephyrUpdateTest";
+
+// Database Tools
+export { dbQuery } from "./dbQuery";
+export { getOtp } from "./getOtp";
