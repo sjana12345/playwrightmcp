@@ -3,6 +3,7 @@ import { config } from "../config/config";
 import { logger } from "../utils/logger";
 import { errorResponse } from "../utils/errorHandler";
 import { playwrightManager } from "../browser/playwrightManager";
+import { attemptSelfHealing } from "../utils/selfHealing";
 import * as tools from "../tools";
 
 class ToolRegistry {
@@ -54,6 +55,17 @@ class ToolRegistry {
           attempt,
           error: String(error),
         });
+
+        // Attempt self-healing for selector-related failures
+        if (attempt < retryAttempts && args?.selector && String(error).includes("Timeout")) {
+          const newSelector = await attemptSelfHealing(ctx.page, args.selector, toolName);
+          if (newSelector) {
+            logger.info("Retrying with healed selector", { old: args.selector, new: newSelector });
+            args.selector = newSelector;
+            // Immediate retry without delay if healed
+            continue;
+          }
+        }
 
         if (attempt === retryAttempts) {
           const screenshot = await playwrightManager.screenshotOnFailure(ctx.sessionId);

@@ -27,9 +27,9 @@ export const testLocator: ToolDefinition = {
         el.boundingBox(),
         el.evaluate((e) => {
           const attrs: Record<string, string> = {};
-          for (const attr of e.attributes) {
+          Array.from(e.attributes).forEach((attr) => {
             attrs[attr.name] = attr.value;
-          }
+          });
           return attrs;
         }),
       ]);

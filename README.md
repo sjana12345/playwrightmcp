@@ -300,6 +300,22 @@ Returns 422 if any step fails.
 | `MAX_CONCURRENT_SESSIONS` | `10`      | Max simultaneous sessions           |
 | `SESSION_IDLE_TIMEOUT`    | `300000`  | Auto-close idle sessions after (ms) |
 | `REQUEST_TIMEOUT`         | `60000`   | Tool execution timeout (ms)         |
+| `SELF_HEALING_ENABLED`    | `false`   | Enable AI-powered self-healing      |
+| `AI_API_KEY`              | -         | OpenAI (or compatible) API key      |
+| `AI_BASE_URL`             | `https://api.openai.com/v1` | URL for AI endpoint                 |
+| `AI_MODEL`                | `gpt-4o-mini` | AI Model to use for healing         |
+
+---
+
+## AI Self-Healing
+
+The server includes an experimental AI-powered **Self-Healing** feature. When enabled, if a tool that relies on a `selector` (like `click` or `fill`) fails due to a `TimeoutError`, the server will:
+1. Capture a snapshot of the current DOM (interactive elements).
+2. Send the snapshot and the failed selector to the configured AI model.
+3. The AI will analyze the DOM and suggest a corrected selector.
+4. The server will immediately retry the action using the new, healed selector.
+
+To use this feature, set `SELF_HEALING_ENABLED=true` and provide an `AI_API_KEY`. You can use any OpenAI-compatible API by changing the `AI_BASE_URL` and `AI_MODEL` variables.
 
 ---
 

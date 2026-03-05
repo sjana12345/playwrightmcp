@@ -28,4 +28,10 @@ export const config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
   },
+  ai: {
+    enabled: process.env.SELF_HEALING_ENABLED === "true",
+    apiKey: process.env.AI_API_KEY,
+    baseUrl: process.env.AI_BASE_URL ?? "https://api.openai.com/v1",
+    model: process.env.AI_MODEL ?? "minimax-m2.5",
+  },
 } as const;
