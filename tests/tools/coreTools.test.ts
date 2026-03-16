@@ -7,6 +7,8 @@ import { hover } from "../../src/tools/hover";
 import { waitForSelector } from "../../src/tools/waitForSelector";
 import { screenshot } from "../../src/tools/screenshot";
 import { extractText } from "../../src/tools/extractText";
+import { waitForTimeout } from "../../src/tools/waitForTimeout";
+import { pause } from "../../src/tools/pause";
 
 jest.mock("../../src/utils/logger", () => ({
   logger: { info: jest.fn(), warn: jest.fn(), error: jest.fn() },
@@ -157,6 +159,24 @@ describe("Core Interaction Tools", () => {
       expect(result.status).toBe("success");
       expect(mockPage.waitForSelector).toHaveBeenCalledWith("h1", { state: "visible", timeout: undefined });
       expect(result.data?.text).toBeDefined();
+    });
+  });
+
+  describe("wait_for_timeout", () => {
+    it("should wait for the specified timeout", async () => {
+      const result = await waitForTimeout.execute(ctx, { timeout: 1000 });
+      expect(result.status).toBe("success");
+      expect(mockPage.waitForTimeout).toHaveBeenCalledWith(1000);
+      expect(result.data?.timeout).toBe(1000);
+    });
+  });
+
+  describe("pause", () => {
+    it("should pause execution", async () => {
+      const result = await pause.execute(ctx, {});
+      expect(result.status).toBe("success");
+      expect(mockPage.pause).toHaveBeenCalled();
+      expect(result.data?.paused).toBe(true);
     });
   });
 });

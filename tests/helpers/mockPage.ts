@@ -48,6 +48,8 @@ export function createMockPage(overrides: Record<string, unknown> = {}): Page {
     dragAndDrop: jest.fn().mockResolvedValue(undefined),
     waitForSelector: jest.fn().mockResolvedValue({}),
     waitForLoadState: jest.fn().mockResolvedValue(undefined),
+    waitForTimeout: jest.fn().mockResolvedValue(undefined),
+    pause: jest.fn().mockResolvedValue(undefined),
     goBack: jest.fn().mockResolvedValue({ status: () => 200 }),
     goForward: jest.fn().mockResolvedValue({ status: () => 200 }),
     reload: jest.fn().mockResolvedValue({ status: () => 200 }),

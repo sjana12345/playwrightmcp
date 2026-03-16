@@ -6,6 +6,8 @@ export { hover } from "./hover";
 export { waitForSelector } from "./waitForSelector";
 export { screenshot } from "./screenshot";
 export { extractText } from "./extractText";
+export { waitForTimeout } from "./waitForTimeout";
+export { pause } from "./pause";
 
 // Additional interaction tools
 export { selectOption } from "./selectOption";
