@@ -19,6 +19,7 @@ export { focus } from "./focus";
 export { getAttribute } from "./getAttribute";
 export { evaluate } from "./evaluate";
 export { dragAndDrop } from "./dragAndDrop";
+export { uploadFile } from "./uploadFile";
 
 // Navigation tools
 export { goBack } from "./goBack";

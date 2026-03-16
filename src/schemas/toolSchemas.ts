@@ -157,6 +157,12 @@ export const dragAndDropSchema = z.object({
   timeout: z.number().int().positive().optional(),
 });
 
+export const uploadFileSchema = z.object({
+  selector: z.string().min(1, "Selector is required"),
+  files: z.union([z.string(), z.array(z.string())]),
+  timeout: z.number().int().positive().optional(),
+});
+
 export const waitForLoadStateSchema = z.object({
   state: z
     .enum(["load", "domcontentloaded", "networkidle"])

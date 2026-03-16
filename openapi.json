@@ -85,7 +85,7 @@
                 "properties": {
                   "tool": {
                     "type": "string",
-                    "description": "The tool to run. Options: 'navigate', 'click', 'fill', 'hover', 'wait_for_selector', 'wait_for_timeout', 'pause', 'screenshot', 'extract_text', 'select_option', 'check', 'uncheck', 'press', 'type', 'focus', 'get_attribute', 'evaluate', 'drag_and_drop', 'go_back', 'go_forward', 'reload', 'get_title', 'get_url', 'wait_for_load_state', 'test_locator', 'get_by_text', 'get_by_role', 'get_by_label', 'get_by_placeholder', 'get_by_test_id', 'highlight_locator', 'assert_text', 'assert_visible', 'assert_hidden', 'assert_title', 'assert_url', 'assert_element_count', 'assert_attribute', 'assert_checked', 'assert_enabled', 'assert_value', 'zephyr_update_test', 'db_query', 'get_otp'"
+                    "description": "The tool to run. Options: 'navigate', 'click', 'fill', 'hover', 'wait_for_selector', 'wait_for_timeout', 'pause', 'screenshot', 'extract_text', 'select_option', 'check', 'uncheck', 'press', 'type', 'focus', 'get_attribute', 'evaluate', 'drag_and_drop', 'upload_file', 'go_back', 'go_forward', 'reload', 'get_title', 'get_url', 'wait_for_load_state', 'test_locator', 'get_by_text', 'get_by_role', 'get_by_label', 'get_by_placeholder', 'get_by_test_id', 'highlight_locator', 'assert_text', 'assert_visible', 'assert_hidden', 'assert_title', 'assert_url', 'assert_element_count', 'assert_attribute', 'assert_checked', 'assert_enabled', 'assert_value', 'zephyr_update_test', 'db_query', 'get_otp'"
                   },
                   "sessionId": { "type": "string" },
                   "args": {

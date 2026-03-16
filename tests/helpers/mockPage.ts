@@ -46,6 +46,7 @@ export function createMockPage(overrides: Record<string, unknown> = {}): Page {
     uncheck: jest.fn().mockResolvedValue(undefined),
     selectOption: jest.fn().mockResolvedValue(["option1"]),
     dragAndDrop: jest.fn().mockResolvedValue(undefined),
+    setInputFiles: jest.fn().mockResolvedValue(undefined),
     waitForSelector: jest.fn().mockResolvedValue({}),
     waitForLoadState: jest.fn().mockResolvedValue(undefined),
     waitForTimeout: jest.fn().mockResolvedValue(undefined),

@@ -1135,6 +1135,45 @@ Execute JavaScript in the browser page context.
 
 ---
 
+#### `upload_file`
+
+Upload one or more files to an `<input type="file">` element.
+
+| Arg          | Type                       | Required | Default | Description                         |
+| ------------ | -------------------------- | -------- | ------- | ----------------------------------- |
+| `selector` | `string`                 | Yes      | -       | CSS/XPath selector                  |
+| `files`    | `string` or `string[]` | Yes      | -       | Absolute file path(s) on the server |
+| `timeout`  | `integer`                | No       | -       | Timeout in ms                       |
+
+**Payload Examples:**
+
+```json
+{
+  "tool": "upload_file",
+  "sessionId": "abc-123",
+  "args": { "selector": "#file-upload", "files": "/absolute/path/to/document.pdf" }
+}
+```
+
+```json
+{
+  "tool": "upload_file",
+  "sessionId": "abc-123",
+  "args": { "selector": "input[type='file']", "files": ["/tmp/image1.png", "/tmp/image2.png"] }
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": { "selector": "#file-upload", "files": "/absolute/path/to/document.pdf", "uploaded": true }
+}
+```
+
+---
+
 #### `drag_and_drop`
 
 Drag an element and drop it onto another element.

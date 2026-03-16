@@ -9,6 +9,7 @@ import { focus } from "../../src/tools/focus";
 import { getAttribute } from "../../src/tools/getAttribute";
 import { evaluate } from "../../src/tools/evaluate";
 import { dragAndDrop } from "../../src/tools/dragAndDrop";
+import { uploadFile } from "../../src/tools/uploadFile";
 
 jest.mock("../../src/utils/logger", () => ({
   logger: { info: jest.fn(), warn: jest.fn(), error: jest.fn() },
@@ -153,6 +154,28 @@ describe("Additional Interaction Tools", () => {
       expect(result.status).toBe("success");
       expect(mockPage.waitForSelector).toHaveBeenCalledWith("#src", { timeout: 5000 });
       expect(mockPage.waitForSelector).toHaveBeenCalledWith("#tgt", { timeout: 5000 });
+    });
+  });
+
+  describe("upload_file", () => {
+    it("should upload a single file", async () => {
+      const result = await uploadFile.execute(ctx, {
+        selector: "input[type='file']",
+        files: "/path/to/file.txt",
+      });
+      expect(result.status).toBe("success");
+      expect(mockPage.setInputFiles).toHaveBeenCalledWith("input[type='file']", "/path/to/file.txt", { timeout: undefined });
+      expect(result.data?.uploaded).toBe(true);
+    });
+
+    it("should upload multiple files with timeout", async () => {
+      const result = await uploadFile.execute(ctx, {
+        selector: "#upload",
+        files: ["file1.png", "file2.png"],
+        timeout: 5000,
+      });
+      expect(result.status).toBe("success");
+      expect(mockPage.setInputFiles).toHaveBeenCalledWith("#upload", ["file1.png", "file2.png"], { timeout: 5000 });
     });
   });
 });
