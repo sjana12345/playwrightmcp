@@ -585,6 +585,64 @@ Wait for an element to reach a desired state.
 
 ---
 
+#### `wait_for_timeout`
+
+Wait for a specific amount of time in milliseconds. Use sparingly; prefer `wait_for_selector` or `wait_for_load_state` when possible.
+
+| Arg       | Type      | Required | Default | Description         |
+| --------- | --------- | -------- | ------- | ------------------- |
+| `timeout` | `integer` | Yes      | -       | Time to wait in ms  |
+
+**Payload Example:**
+
+```json
+{
+  "tool": "wait_for_timeout",
+  "sessionId": "abc-123",
+  "args": { "timeout": 2000 }
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": { "timeout": 2000 }
+}
+```
+
+---
+
+#### `pause`
+
+Pause script execution. Useful for debugging in headed mode to inspect the page or debug using the Playwright Inspector.
+
+| Arg        | Type | Required | Default | Description         |
+| ---------- | ---- | -------- | ------- | ------------------- |
+| *(none)* | -    | -        | -       | No arguments needed |
+
+**Payload Example:**
+
+```json
+{
+  "tool": "pause",
+  "sessionId": "abc-123",
+  "args": {}
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": { "paused": true }
+}
+```
+
+---
+
 #### `screenshot`
 
 Take a screenshot of the page or a specific element.
